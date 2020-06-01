@@ -9,6 +9,7 @@ from config.config import *
 from parse.parser import Parser
 from storage.aiomongoclient import AioMongoClient
 from storage.redisclient import RedisClient
+
 try:
     import uvloop
 
@@ -25,11 +26,11 @@ class UrlCrawler:
 
     async def get_child_urls(self, session, url):
         try:
-            async with session.get(url, timeout=120) as resp:
-                text = await resp.text()
+            async with session.get(url, timeout=150) as resp:
+                text = await resp.text("gbk", "ignore")
                 status_code = resp.status
                 child_links, save_dict = Parser.parse_main_page(url, text)
-                child_links = [url for url in child_links if self.db.check(url)]
+                child_links = list(set(child_links))
                 # print(child_links)
                 self.db.multi_add_to_wait(child_links)
                 await self.mongodb.save_data(save_dict, "book_list")

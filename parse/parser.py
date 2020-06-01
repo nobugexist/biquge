@@ -30,7 +30,7 @@ class Parser:
             save_dict["last_update"] = str(Parser.xpath(text, last_update_r)[0]).split("：")[-1]
             save_dict["intro"] = Parser.xpath(text, intro_r)[0]
         except Exception:
-            parser.error(f"Error url{url}, here are details:{traceback.format_exc()}")
+            parser.error(f"Error url {url}, here are details:{traceback.format_exc()}")
 
         return child_links, save_dict
 

@@ -17,7 +17,7 @@
 ## config
 + config 保存mongdb,redis,并发量等配置信息
 
-## storage
+##storage
 + redisclient 对redis的包装类
 + aiomongoclient 对异步操作mongodb的包装类
 + directstorage 将文件直接压缩后保存操作的包装类

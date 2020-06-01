@@ -1,6 +1,6 @@
-# REDIS_HOST = "39.97.242.24"
+# REDIS_HOST = ""
 # REDIS_PORT = 6379
-# REDIS_PASSWORD = "zhegemimazhenbucuo"
+# REDIS_PASSWORD = ""
 
 REDIS_HOST = "localhost"
 REDIS_PORT = 6379

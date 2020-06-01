@@ -26,11 +26,12 @@ class SinglePageCrawler:
     async def fetch_single_page_and_save_direct(self, session, url):
         async with session.get(url, timeout=15) as resp:
             try:
-                if resp.status != 200:
+                status_code = resp.status
+                if status_code != 200:
                     self.db.add_to_wait(url)
                     return
                 text = await resp.read()
-                status_code = resp.status
+
                 save_dict = Parser.parse_single_page(url, text)
                 # print(save_dict)
                 # 维护一个json格式的字典，找到每本书的的url对应的书名
@@ -47,12 +48,13 @@ class SinglePageCrawler:
     async def fetch_single_page_and_save_mongo(self, session, url):
         async with session.get(url, timeout=15) as resp:
             try:
-                if resp.status != 200:
+                status_code = resp.status
+                if status_code != 200:
                     self.db.add_to_wait(url)
                     return
-                text = await resp.text()
+                text = await resp.text("gbk", "ignore")
                 save_dict = Parser.parse_single_page(url, text)
-                status_code = resp.status
+
                 await self.mongodb.save_data(save_dict, url.split("/")[-2].split("_")[-1])
                 crawler.info(f"get url: {url} status: {status_code}")
 
