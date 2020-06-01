@@ -27,7 +27,7 @@ class RedisClient:
     def get_from_wait(self):
         return self.db.lpop(REDIS_KEY_WAIT)
 
-    def multi_get_from_wait(self,size):
+    def multi_get_from_wait(self, size):
         urls = self.db.lrange(REDIS_KEY_WAIT, 0, size)
         self.db.ltrim(REDIS_KEY_WAIT, size + 1, -1)
         return urls

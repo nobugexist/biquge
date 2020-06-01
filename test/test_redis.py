@@ -5,13 +5,14 @@ from storage.redisclient import RedisClient
 from config.config import *
 
 
-def test_redis():
-    db = RedisClient()
-    for i in range(1000):
-        url = db.get_from_wait()
-        print(url)
+async def test_redis():
+    redis = AioRedisClient(REDIS_URL)
+    pool = await redis.create_redis_pool()
+    for i in range(1000000):
+        await pool.sadd("testts",i)
+        print(i)
 
-
+    await redis.destory_redis_pool()
 
 if __name__ == '__main__':
-    test_redis()
+    asyncio.run( test_redis())

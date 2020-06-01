@@ -13,7 +13,7 @@ def start_loop(loop):
 
 
 if __name__ == '__main__':
-    new_loop = asyncio.new_event_loop()
+    new_loop = asyncio.get_event_loop()
     t = threading.Thread(target=start_loop, args=(new_loop,))
     t.start()
 

@@ -1,6 +1,8 @@
-import os
+def check(url):
+    if url == "abcde":
+        return True
 
-path = os.path.join("d:/asdasd", "dasd.txt")
-os.makedirs(os.path.split(path)[0])
-with open(path, "a+")as f:
-    f.write("dadasda")
+child_links = ["abcde","abcdef"]
+child_links = [url   for url in child_links if not check(url)]
+
+print(child_links)
