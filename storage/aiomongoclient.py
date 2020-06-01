@@ -12,7 +12,6 @@ class AioMongoClient:
 
     async def save_data(self, items, collection):
         db = self.client[MONGO_DB_NAME]
-
         try:
             # print(items)
             await db[collection].insert_one(items)

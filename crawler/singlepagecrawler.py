@@ -9,7 +9,12 @@ from storage.aiomongoclient import AioMongoClient
 from storage.directstorege import DirectStorage
 from storage.redisclient import RedisClient
 import sys
+try:
+    import uvloop
 
+    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+except ImportError:
+    pass
 sys.path.append("..")
 
 
@@ -19,7 +24,7 @@ class SinglePageCrawler:
         self.mongodb = mongodb or AioMongoClient()
 
     async def fetch_single_page_and_save_direct(self, session, url):
-        async with session.get(url, timeout=30) as resp:
+        async with session.get(url, timeout=15) as resp:
             try:
                 if resp.status != 200:
                     self.db.add_to_wait(url)
@@ -29,7 +34,7 @@ class SinglePageCrawler:
                 save_dict = Parser.parse_single_page(url, text)
                 # print(save_dict)
                 # 维护一个json格式的字典，找到每本书的的url对应的书名
-                await DirectStorage.save_single_page(save_dict["book_name"], save_dict["chapter_name"],
+                await DirectStorage.save_single_page(url.split("/")[-2].split("_")[-1], save_dict["chapter_name"],
                                                      save_dict["content"])
                 # await DirectStorage.save_single_page("1", str(randint(1,100000)), text)
                 crawler.info(f"get url: {url} status: {status_code}")
@@ -48,7 +53,7 @@ class SinglePageCrawler:
                 text = await resp.text()
                 save_dict = Parser.parse_single_page(url, text)
                 status_code = resp.status
-                await self.mongodb.save_data(save_dict, save_dict["book_id"])
+                await self.mongodb.save_data(save_dict, url.split("/")[-2].split("_")[-1])
                 crawler.info(f"get url: {url} status: {status_code}")
 
                 self.db.add_to_finish(self.db.hash_url(url))
@@ -58,7 +63,7 @@ class SinglePageCrawler:
 
     async def get_urls_to_crawl(self):
         while True:
-            # for i in range(500):
+        # for i in range(50):
             session = aiohttp.ClientSession()
             if self.db.get_wait_count() <= 0:
                 crawler.info("ALL URLS HAVE BEEN CRAWLED")

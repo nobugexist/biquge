@@ -9,7 +9,12 @@ from config.config import *
 from parse.parser import Parser
 from storage.aiomongoclient import AioMongoClient
 from storage.redisclient import RedisClient
+try:
+    import uvloop
 
+    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+except ImportError:
+    pass
 sys.path.append("..")
 
 
@@ -24,10 +29,10 @@ class UrlCrawler:
                 text = await resp.text()
                 status_code = resp.status
                 child_links, save_dict = Parser.parse_main_page(url, text)
-                child_links = [url for url in child_links if  self.db.check(url)]
+                child_links = [url for url in child_links if self.db.check(url)]
                 # print(child_links)
                 self.db.multi_add_to_wait(child_links)
-                await self.mongodb.save_data(save_dict,"book_list")
+                await self.mongodb.save_data(save_dict, "book_list")
                 await asyncio.sleep(random.random())
                 crawler.info(f"get url: {url} status: {status_code}")
         except Exception:
@@ -35,7 +40,7 @@ class UrlCrawler:
 
     async def iter_urls(self):
 
-        START_URL_LIST = ["https://www.biquge.tv/" + str(random.randint(0, 9)) + "_" + str(i) for i in range(1, 42392)]
+        START_URL_LIST = ["https://www.biquge.tv/" + str(random.randint(0, 9)) + "_" + str(i) for i in range(1, 20001)]
 
         for i in range(0, len(START_URL_LIST), SPIDER_CONCURRENCY_NUM):
             session = aiohttp.ClientSession()

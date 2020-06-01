@@ -58,3 +58,4 @@ win32-setctime==1.0.1
 yarl==1.4.2
 zope.event==4.4
 zope.interface==5.1.0
+uvloop==0.14.0

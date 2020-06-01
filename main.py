@@ -5,7 +5,12 @@ import threading
 from config.config import *
 from crawler.singlepagecrawler import SinglePageCrawler
 from crawler.urlcrawler import UrlCrawler
+try:
+    import uvloop
 
+    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+except ImportError:
+    pass
 
 def start_loop(loop):
     asyncio.set_event_loop(loop)
