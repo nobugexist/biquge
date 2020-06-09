@@ -5,12 +5,14 @@ from lxml import html
 
 
 class Parser:
+    # 封装xpath
     @staticmethod
     def xpath(text, rule):
         root = html.fromstring(text)
         nodes = root.xpath(rule)
         return nodes
 
+    # 解析小说的章节目录页
     @staticmethod
     def parse_main_page(url, text):
         book_name_r = '//*[@id="info"]/h1//text()'
@@ -34,11 +36,11 @@ class Parser:
 
         return child_links, save_dict
 
+    # 解析小说的单个章节页
     @staticmethod
     def parse_single_page(url, text):
         chapter_name_r = '//h1//text()'
         content_r = '//*[@id="content"]//text()'
-
 
         save_dict = dict()
         try:
@@ -46,10 +48,7 @@ class Parser:
             save_dict["chapter_name"] = re.sub(r"[/\\:*?\"<>|\s]", "_", list(Parser.xpath(text, chapter_name_r))[0])
             save_dict["content"] = content
             save_dict["url"] = url
-            # save_dict["text"] = text
         except Exception:
             parser.error(f"Error url{url}, here are details:{traceback.format_exc()}")
 
-        # print(save_dict)
         return save_dict
-
