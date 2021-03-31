@@ -30,7 +30,7 @@ idna==2.9
 kombu==4.6.8
 librabbitmq==2.0.0
 loguru==0.4.1
-lxml==4.5.0
+lxml==4.6.3
 more-itertools==8.2.0
 motor==2.1.0
 msgpack==1.0.0
