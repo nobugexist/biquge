@@ -38,7 +38,7 @@ multidict==4.7.5
 packaging==20.3
 pamqp==2.3.0
 pluggy==0.13.1
-py==1.8.1
+py==1.10.0
 pycares==3.1.1
 pycparser==2.20
 pydantic==1.4
