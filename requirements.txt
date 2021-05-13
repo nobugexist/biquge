@@ -41,7 +41,7 @@ pluggy==0.13.1
 py==1.8.1
 pycares==3.1.1
 pycparser==2.20
-pydantic==1.4
+pydantic==1.6.2
 pymongo==3.10.1
 pyparsing==2.4.6
 pytest==5.4.2
