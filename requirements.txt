@@ -39,7 +39,7 @@ packaging==20.3
 pamqp==2.3.0
 pluggy==0.13.1
 py==1.8.1
-pycares==3.1.1
+pycares==4.2.0
 pycparser==2.20
 pydantic==1.4
 pymongo==3.10.1
